@@ -3,7 +3,8 @@ using System.Collections;
 
 public class DieOnHit : MonoBehaviour {
 
-	// Use this for initialization
+	// Obselete for now
+
 	void OnCollisionEnter2D(Collision2D c)
     {
         Debug.Log("Hi");
@@ -13,6 +14,8 @@ public class DieOnHit : MonoBehaviour {
     void OnTriggerStay2D(Collider2D c)
     {
         if (c.GetComponent<Graze>() == null)
+            Destroy(gameObject);
+        if (c.GetComponent<Damage>() != null)
             Destroy(gameObject);
     }
 }
