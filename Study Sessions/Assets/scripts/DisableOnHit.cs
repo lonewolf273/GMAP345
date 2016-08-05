@@ -16,7 +16,7 @@ public class DisableOnHit : MonoBehaviour {
     {
         if (c.GetComponent<Graze>() == null)
             disable();
-        if (c.GetComponent<Damage>() != null)
+        if (c.GetComponent<Hitbox>() != null)
             disable();
     }
 

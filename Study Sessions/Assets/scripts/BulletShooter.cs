@@ -1,24 +1,61 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-public class BulletShooter : MonoBehaviour {
+public class BulletShooter {
 
+    // VARIABLES
     private GameObject bullet;
     private List<GameObject> bulletList;
+
+    
+    // CONSTRUCTORS
+    public BulletShooter()
+    {
+        bullet = null;
+        bulletList = new List<GameObject>();
+    }
 
     public BulletShooter(GameObject b)
     {
         setBullet(b);
         bulletList = new List<GameObject>();
     }
-    
 
+    // INSPECTORS
+    bool checkDisabled(GameObject g) //checks if the bullet is disabled
+    {
+        return !(g.activeSelf);
+    }
+
+    public GameObject getBullet()
+    {
+        return bullet;
+    }
+    bool checkDisabled(int i) //checks if the bullet at index i is disabled
+    {
+        return checkDisabled(bulletList[i]);
+    }
+    // MUTATORS
+    public void setBullet(GameObject b)
+    {
+        bullet = b;
+    }
+    public void resetList(GameObject b)
+    {
+        kill();
+    }
+
+    // FACILITATORS
+    public void shoot(float s)
+    {
+        shoot(s, new Vector3(0, 0, 0), 0);
+    }
     public void shoot(float s, Vector3 p, float q) //shoot at speed s, at position p, and at quaternion q
     {
         GameObject i = bulletList.Find(checkDisabled);
         if (i == null)
         {
-            GameObject a = (GameObject)Instantiate(bullet, p, Quaternion.identity);
+            GameObject a = (GameObject)MonoBehaviour.Instantiate(bullet, p, Quaternion.identity);
             a.GetComponent<Bullet>().speed = s;
             a.GetComponent<Bullet>().setRotation(q);
             bulletList.Add(a);
@@ -32,6 +69,7 @@ public class BulletShooter : MonoBehaviour {
         }
     }
 
+    // SHOT TYPES
     public void shootCircle(float speed, Vector3 position, int amount, int offset = 0) //shoots amount of bullets at position at speed
     {
         for (int i = 0; i < amount; i++)
@@ -40,13 +78,20 @@ public class BulletShooter : MonoBehaviour {
         }
     }
 
-    bool checkDisabled(GameObject g)
-    {
-        return !(g.activeSelf);
-    }
 
-    public void setBullet(GameObject b)
+    // KILL CODE
+    public void kill()
     {
-        bullet = b;
+        foreach (var i in bulletList)
+        {
+            if (i.activeSelf == true)
+                i.GetComponent<Bullet>().setDeath(true);
+            else
+            {
+                i.SetActive(true);
+                MonoBehaviour.Destroy(i);
+            }
+        }
+        bulletList.Clear();
     }
 }

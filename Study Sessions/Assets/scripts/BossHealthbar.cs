@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class BossHealthbar : MonoBehaviour {
     public GameObject boss;
     private BossGeneric h;
-    private PlayerStats p;
+    private Enemy p;
     private Image s;
 	// Use this for initialization
 	void Start () {
@@ -13,7 +13,7 @@ public class BossHealthbar : MonoBehaviour {
         h = boss.GetComponent<BossGeneric>();
         if (h == null)
         {
-            p = boss.GetComponent<PlayerStats>();
+            p = boss.GetComponent<Enemy>();
             s.fillAmount = 1f;
         }
         else
@@ -32,12 +32,13 @@ public class BossHealthbar : MonoBehaviour {
             setFill(p.getHeatlhPercent());
         }
 
-        if (s.fillAmount <= 0f || boss.activeSelf == false || boss == null)
+        if (s.fillAmount <= 0f || boss == null || boss.activeSelf == false)
             Destroy(gameObject);
 
         s.color = new Color(getRed(), getGreen(), getBlue());
     }
 
+ 
 
     void followBoss()
     {

@@ -2,10 +2,22 @@
 using System.Collections;
 
 public class BossGeneric : MonoBehaviour {
-    private int healthMax = 100;
-    public int health;
-    public GameObject healthbar;
+
+    [SerializeField] protected int healthMax = 100;
+    int health;
+    [SerializeField] protected GameObject healthbar;
+    [SerializeField] BossAttackGeneric boss;
+
+    enum State
+    {
+        ALIVE,
+        DEAD
+    }
+    float deathTimer = 2f;
+
+    State status = State.ALIVE; //start with being alive
 	// Use this for initialization
+
 	void Start () {
         health = healthMax;
         GameObject hud = GameObject.FindGameObjectWithTag("HUD");
@@ -22,13 +34,23 @@ public class BossGeneric : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        //Debug.Log("Health : " + health.ToString());
+        if (status == State.DEAD)
+        {
+            deathTimer -= Time.deltaTime;
+            transform.localScale = new Vector3(deathTimer/2f, deathTimer/2f, 0);
+        }
+
+        if (deathTimer < 0f)
+            Destroy(gameObject);
 	}
 
     void OnTriggerEnter2D(Collider2D c)
     {
-        if (c.tag == "Bullet")
-            damage();
+        if (status == State.ALIVE)
+        {
+            if (c.tag == "Bullet")
+                damage();
+        }
     }
 
     void damage()
@@ -37,8 +59,14 @@ public class BossGeneric : MonoBehaviour {
 
         if (health <= 0)
         {
-            gameObject.SetActive(false);
+            die();
         }
+    }
+
+    public void die()
+    {
+        GetComponent<BossAttackGeneric>().kill();
+        status = State.DEAD;
     }
 
     public float getHeatlhPercent()

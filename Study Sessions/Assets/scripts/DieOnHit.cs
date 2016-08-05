@@ -15,7 +15,7 @@ public class DieOnHit : MonoBehaviour {
     {
         if (c.GetComponent<Graze>() == null)
             Destroy(gameObject);
-        if (c.GetComponent<Damage>() != null)
+        if (c.GetComponent<Hitbox>() != null)
             Destroy(gameObject);
     }
 }
