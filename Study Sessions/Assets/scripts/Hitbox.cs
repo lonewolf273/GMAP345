@@ -16,7 +16,11 @@ public class Hitbox : MonoBehaviour {
             setOpacity(1f);
         else
             setOpacity(0f);
+<<<<<<< HEAD
         transform.Rotate(0, 0, 100 * Time.deltaTime);
+=======
+
+>>>>>>> bde8623... Now has controller support. Streamlined players. Working on general boss scripts. Got rid of old player code
     }
 
     void setOpacity(float o)

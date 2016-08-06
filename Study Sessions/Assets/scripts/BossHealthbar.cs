@@ -32,8 +32,17 @@ public class BossHealthbar : MonoBehaviour {
 	void Update () {
         if (h != null)
             transform.position = Camera.main.WorldToScreenPoint(boss.transform.position);
+<<<<<<< HEAD
         if (p != null)
             setFill(p.getHealthPercent());
+=======
+            setFill(h.getHeatlhPercent());
+        }
+        else if (p != null)
+        {
+            setFill(p.getHealthPercent());
+        }
+>>>>>>> bde8623... Now has controller support. Streamlined players. Working on general boss scripts. Got rid of old player code
 
         if (boss == null || boss.activeSelf == false)
             Destroy(gameObject);

@@ -152,8 +152,12 @@ public class Player : Enemy {
         if (hud == null && create)
         {
             hud = (GameObject)Instantiate(new GameObject("HUD"), Vector3.up, Quaternion.identity);
+<<<<<<< HEAD
             hud.tag = "HUD";
             hud.layer = 5;
+=======
+
+>>>>>>> bde8623... Now has controller support. Streamlined players. Working on general boss scripts. Got rid of old player code
 
             hud.AddComponent<RectTransform>();
             Canvas c = hud.AddComponent<Canvas>();
@@ -164,9 +168,15 @@ public class Player : Enemy {
             c.renderMode = RenderMode.ScreenSpaceOverlay;
             c.pixelPerfect = false;
             c.sortingOrder = 0;
+<<<<<<< HEAD
             c.targetDisplay = 0;
 
             s.referenceResolution = new Vector2(1600f, 900f);
+=======
+            c.targetDisplay = 1;
+
+            s.referenceResolution = new Vector2(1600, 900);
+>>>>>>> bde8623... Now has controller support. Streamlined players. Working on general boss scripts. Got rid of old player code
             s.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
             s.matchWidthOrHeight = 0f;
             s.referencePixelsPerUnit = 100;

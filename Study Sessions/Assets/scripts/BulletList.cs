@@ -35,7 +35,10 @@ public class BulletList
     public BulletList(GameObject b = null)
     {
         setBullet(b);
+<<<<<<< HEAD
         shooter = new BulletShooter(b);
+=======
+>>>>>>> bde8623... Now has controller support. Streamlined players. Working on general boss scripts. Got rid of old player code
         setMaxTimer(1f);
         reset();
     }
@@ -43,7 +46,10 @@ public class BulletList
     public BulletList(GameObject bullet = null, float timer = 1f, float speed = 1f)
     {
         setBullet(bullet);
+<<<<<<< HEAD
         shooter = new BulletShooter(bullet);
+=======
+>>>>>>> bde8623... Now has controller support. Streamlined players. Working on general boss scripts. Got rid of old player code
         setMaxTimer(timer);
         reset();
         setBulletSpeed(speed);
@@ -78,6 +84,7 @@ public class BulletList
         shooter = new BulletShooter(b);
     }
 
+<<<<<<< HEAD
     protected void setShooter()
     {
         if (bullet == null)
@@ -86,6 +93,8 @@ public class BulletList
             shooter = new BulletShooter(bullet);
     }
 
+=======
+>>>>>>> bde8623... Now has controller support. Streamlined players. Working on general boss scripts. Got rid of old player code
     public void update(float t)
     {
         bulletTimer -= t;
@@ -93,10 +102,14 @@ public class BulletList
 
     public void reset()
     {
+<<<<<<< HEAD
         if (getShooter() != null)
             getShooter().kill();
         else
             shooter = new BulletShooter(bullet);
+=======
+        bulletTimer = maxTimer;
+>>>>>>> bde8623... Now has controller support. Streamlined players. Working on general boss scripts. Got rid of old player code
     }
 
     public void setMaxTimer(float t)
@@ -109,11 +122,14 @@ public class BulletList
         bulletSpeed = s;
     }
 
+<<<<<<< HEAD
     public void resetTimer()
     {
         bulletTimer = maxTimer;
     }
 
+=======
+>>>>>>> bde8623... Now has controller support. Streamlined players. Working on general boss scripts. Got rid of old player code
     //////////////////////////
     //
     //      FACILITATORS
@@ -121,6 +137,7 @@ public class BulletList
     //////////////////////////
     public void shoot()
     {
+<<<<<<< HEAD
         shoot(ShotType.STRAIGHT, new Vector3(0, 0, 0), 0);
     }
 
@@ -133,6 +150,16 @@ public class BulletList
     {
         if (getShooter() == null)
             setShooter();
+=======
+        getShooter().shoot(getBulletSpeed());
+    }
+    public void shoot(Vector3 pos, float rotation)
+    {
+        getShooter().shoot(getBulletSpeed(), pos, rotation);
+    }
+    public void shoot(ShotType s, Vector3 pos, float rotation, int bulletNumber = 1, float spreadAngle = 10f)
+    {
+>>>>>>> bde8623... Now has controller support. Streamlined players. Working on general boss scripts. Got rid of old player code
         switch (s)
         {
             case ShotType.STRAIGHT:
