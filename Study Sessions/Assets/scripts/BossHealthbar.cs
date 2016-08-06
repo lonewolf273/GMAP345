@@ -14,6 +14,11 @@ public class BossHealthbar : MonoBehaviour {
         if (h == null)
         {
             p = boss.GetComponent<Enemy>();
+            if (boss.GetComponent<Player>() != null)
+                if (boss.GetComponent<Player>().getNumber() == 1)
+                    s.fillOrigin = 0;
+                else
+                    s.fillOrigin = 1;
             s.fillAmount = 1f;
         }
         else
@@ -27,12 +32,12 @@ public class BossHealthbar : MonoBehaviour {
             transform.position = Camera.main.WorldToScreenPoint(boss.transform.position);
             setFill(h.getHeatlhPercent());
         }
-        else
+        else if (p != null)
         {
-            setFill(p.getHeatlhPercent());
+            setFill(p.getHealthPercent());
         }
 
-        if (s.fillAmount <= 0f || boss == null || boss.activeSelf == false)
+        if (boss == null || boss.activeSelf == false)
             Destroy(gameObject);
 
         s.color = new Color(getRed(), getGreen(), getBlue());

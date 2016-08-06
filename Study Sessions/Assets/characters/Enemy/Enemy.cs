@@ -38,20 +38,38 @@ public abstract class Enemy : MonoBehaviour {
     [SerializeField]
     protected float hpMax; //Maximum HP
 
+    [SerializeField]
+    protected List<BulletList> bullets;
+
     protected float hp; //health
+
+
 
 
     
     /*
      *  Inspectors
      */
+
+    protected BulletList getBulletList(int i)
+    {
+        if (i < 0 || i >= bullets.Count)
+            throw new System.Exception("Err: " + i.ToString() + " out of range");
+        return bullets[i];
+    }
+
+    public float getHealthPercent()
+    {
+        return getHp() / getHpMax();
+    }
+
     public float getMoveSpeed()
     {
         return moveSpeed;
     }
-    public float getBulletSpeed()
+    public float getBulletSpeed(int i = 0)
     {
-        return bulletSpeed;
+        return getBulletList(i).getBulletSpeed();
     }
     public float getHp()
     {

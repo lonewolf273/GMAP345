@@ -17,7 +17,7 @@ public class KeyboardController {
 
 
 
-    protected Dictionary<Controls, KeyCode>[] control =
+    static protected Dictionary<Controls, KeyCode>[] control =
     {
         new Dictionary<Controls, KeyCode>()
         {
@@ -40,6 +40,19 @@ public class KeyboardController {
             {Controls.PAUSE, KeyCode.Escape},
         },
     };
+
+    public void setControl(int p, Controls c, KeyCode k) //sets the controls of player # to 
+    {
+        if (p <= 0 || p > 2) return;
+        foreach(var d in control)
+        {
+            foreach(var i in d)
+            {
+                if (i.Value == k) return;
+            }
+        }
+        control[p - 1][c] = k;
+    }
     
     public bool Player1Check(Controls c)
     {
@@ -130,6 +143,9 @@ public class KeyboardController {
 }
 
 public class Controller {
+
+    [SerializeField]
+    protected float threshold;
     
     protected Dictionary<Controls, string>[] control =
     {
@@ -171,7 +187,9 @@ public class Controller {
     }
     public float Player1Axis(Controls c)
     {
-        return Input.GetAxis(control[0][c]);
+        if (Mathf.Abs(Input.GetAxis(control[0][c])) > 0.1)
+            return Input.GetAxis(control[0][c]);
+        return 0f;
     }
 
     //whatever
@@ -191,7 +209,7 @@ public class Controller {
     }
     public float Player2Axis(Controls c)
     {
-        return Input.GetAxis(control[0][c]);
+        return Input.GetAxis(control[1][c]);
     }
 
     //whatever

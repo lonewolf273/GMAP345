@@ -1,50 +1,108 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using System.Collections.Generic;
 
-public class Boss : Enemy {
-    
+abstract public class Boss : Enemy {
+
     /////////////////////////////
     //
     //     Unique Variables
     //
     /////////////////////////////
 
+    [SerializeField] protected List<float> bulletTimers;
+    [SerializeField] protected List<float> maxTimers;
+    [SerializeField] protected GameObject healthbar;
+    [SerializeField] protected GameObject hud;
+
+    protected Rigidbody2D _rb;
 
 
-    // Use this for initialization
+    ///////////////////////////////////////
+    //
+    //       DEFAULT UNITY FUNCTIONS
+    //
+    ///////////////////////////////////////
+
     void Start()
     {
 
+        hp = hpMax;
+        bulletShooter = new List<BulletShooter>();
+        _rb = GetComponent<Rigidbody2D>();
+        if (_rb == null)
+            _rb = gameObject.AddComponent<Rigidbody2D>();
+
+        reset();
+        setStatus(State.ALIVE);
+
     }
 
-    // Update is called once per frame
     void Update()
     {
-
+        attack();
+        move();
     }
 
-
-
-    public override void attack()
+    /////////////////////////////
+    //
+    //        INSPECTORS
+    //
+    /////////////////////////////
+    public float getCurrentTimerAt(int i)
     {
-        throw new NotImplementedException();
+        if (i >= bulletTimers.Count || i < 0)
+            throw new Exception("invalid bullet timer");
+        return bulletTimers[i];
     }
+    public float getCurrentTimer(GameObject bullet)
+    {
+        int i = findBullet(bullet);
+        if (i < 0)
+            throw new Exception("invalid bullet timer");
+        return getCurrentTimerAt(findBullet(bullet));
+    }
+     
+    /////////////////////////////
+    //
+    //    PROTECTED METHODS
+    //
+    /////////////////////////////
+
+    protected void startHealthbar(bool createhud = false)
+    {
+        hud = GameObject.FindGameObjectWithTag("HUD");
+        if (hud == null)
+        {
+            hud = (GameObject)Instantiate(hud, Vector3.up, Quaternion.identity);
+        }
+        if (hud != null)
+        {
+            GameObject a = (GameObject)Instantiate(healthbar, Vector3.up, Quaternion.identity);
+            a.GetComponent<BossHealthbar>().boss = this.gameObject;
+            a.transform.SetParent(hud.transform);
+        }
+    }
+    /////////////////////////////
+    //
+    //     OVERRIDES
+    //
+    /////////////////////////////
+
+    abstract public override void attack();
 
     public override void die()
     {
-        throw new NotImplementedException();
+        setStatus(State.DEAD);
+        reset();
+        afterLife();
     }
 
-    public override void move()
-    {
-        throw new NotImplementedException();
-    }
+    abstract protected void afterLife();
 
-    public override void ready()
-    {
-        throw new NotImplementedException();
-    }
+    abstract public override void move();
 
+    abstract public override void ready();
 
 }
