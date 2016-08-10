@@ -32,8 +32,6 @@ public abstract class Enemy : MonoBehaviour {
     [SerializeField]
     protected float moveSpeed;
 
-    [SerializeField]
-    protected float bulletSpeed;
 
     [SerializeField]
     protected float hpMax; //Maximum HP
@@ -88,23 +86,10 @@ public abstract class Enemy : MonoBehaviour {
     {
         for (var i = 0; i < bulletList.Count; i++)
         {
-            if (b == bulletList[i])
+            if (b == getBulletList(i).getBullet())
                 return i;
         }
         return -1;
-    }
-    public int findBulletShooter(GameObject b)
-    {
-        for (var i = 0; i < bulletShooter.Count; i++)
-        {
-            if (b == bulletShooter[i].getBullet())
-                return i;
-        }
-        return -1;
-    }
-    public BulletShooter getBulletShooterAt(GameObject b)
-    {
-        return bulletShooter[findBulletShooter(b)];
     }
 
     protected State getStatus()
@@ -127,9 +112,9 @@ public abstract class Enemy : MonoBehaviour {
         moveSpeed = Mathf.Abs(m);
     }
 
-    public void setBulletSpeed(float s)
+    public void setBulletSpeed(int i, float s)
     {
-        bulletSpeed = s;
+        bullets[i].setBulletSpeed(s);
     }
 
     public void damage(float d)
@@ -138,6 +123,7 @@ public abstract class Enemy : MonoBehaviour {
         if (hp > hpMax) hp = hpMax;
         if (hp <= 0) die();
     }
+
     public void reset()
     {
         hp = hpMax;
@@ -153,12 +139,9 @@ public abstract class Enemy : MonoBehaviour {
     }
     protected void resetShooters()
     {
-        if (bulletShooter.Count > 0)
-            foreach (var i in bulletShooter)
-                i.kill();
-        bulletShooter.Clear();
-        foreach (var i in bulletList)
-            bulletShooter.Add(new BulletShooter(i));
+        if (bullets.Count > 0)
+            foreach (var b in bullets)
+                b.reset();
     }
     protected void setStatus(State s)
     {

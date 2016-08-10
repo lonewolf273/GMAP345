@@ -4,13 +4,13 @@ using UnityEngine.UI;
 
 public class BossHealthbar : MonoBehaviour {
     public GameObject boss;
-    private BossGeneric h;
+    private Boss h;
     private Enemy p;
     private Image s;
 	// Use this for initialization
 	void Start () {
         s = GetComponent<Image>();
-        h = boss.GetComponent<BossGeneric>();
+        h = boss.GetComponent<Boss>();
         if (h == null)
         {
             p = boss.GetComponent<Enemy>();
@@ -22,20 +22,18 @@ public class BossHealthbar : MonoBehaviour {
             s.fillAmount = 1f;
         }
         else
+        {
             s.fillAmount = 0f;
+            p = h;
+        }
     }
 	
 	// Update is called once per frame
 	void Update () {
         if (h != null)
-        {
             transform.position = Camera.main.WorldToScreenPoint(boss.transform.position);
-            setFill(h.getHeatlhPercent());
-        }
-        else if (p != null)
-        {
+        if (p != null)
             setFill(p.getHealthPercent());
-        }
 
         if (boss == null || boss.activeSelf == false)
             Destroy(gameObject);

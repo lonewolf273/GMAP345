@@ -16,7 +16,7 @@ public class Hitbox : MonoBehaviour {
             setOpacity(1f);
         else
             setOpacity(0f);
-
+        transform.Rotate(0, 0, 100 * Time.deltaTime);
     }
 
     void setOpacity(float o)

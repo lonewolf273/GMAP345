@@ -35,6 +35,7 @@ public class BulletList
     public BulletList(GameObject b = null)
     {
         setBullet(b);
+        shooter = new BulletShooter(b);
         setMaxTimer(1f);
         reset();
     }
@@ -42,6 +43,7 @@ public class BulletList
     public BulletList(GameObject bullet = null, float timer = 1f, float speed = 1f)
     {
         setBullet(bullet);
+        shooter = new BulletShooter(bullet);
         setMaxTimer(timer);
         reset();
         setBulletSpeed(speed);
@@ -76,6 +78,14 @@ public class BulletList
         shooter = new BulletShooter(b);
     }
 
+    protected void setShooter()
+    {
+        if (bullet == null)
+            throw new Exception("invalid: missing bullet");
+        else
+            shooter = new BulletShooter(bullet);
+    }
+
     public void update(float t)
     {
         bulletTimer -= t;
@@ -83,7 +93,10 @@ public class BulletList
 
     public void reset()
     {
-        bulletTimer = maxTimer;
+        if (getShooter() != null)
+            getShooter().kill();
+        else
+            shooter = new BulletShooter(bullet);
     }
 
     public void setMaxTimer(float t)
@@ -96,6 +109,11 @@ public class BulletList
         bulletSpeed = s;
     }
 
+    public void resetTimer()
+    {
+        bulletTimer = maxTimer;
+    }
+
     //////////////////////////
     //
     //      FACILITATORS
@@ -103,14 +121,18 @@ public class BulletList
     //////////////////////////
     public void shoot()
     {
-        getShooter().shoot(getBulletSpeed());
+        shoot(ShotType.STRAIGHT, new Vector3(0, 0, 0), 0);
     }
+
     public void shoot(Vector3 pos, float rotation)
     {
-        getShooter().shoot(getBulletSpeed(), pos, rotation);
+        shoot(ShotType.STRAIGHT, pos, rotation);
     }
+
     public void shoot(ShotType s, Vector3 pos, float rotation, int bulletNumber = 1, float spreadAngle = 10f)
     {
+        if (getShooter() == null)
+            setShooter();
         switch (s)
         {
             case ShotType.STRAIGHT:

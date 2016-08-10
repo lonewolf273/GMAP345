@@ -26,7 +26,7 @@ public class KeyboardController {
             {Controls.LEFT, KeyCode.A},
             {Controls.RIGHT, KeyCode.D},
             {Controls.SHOOT, KeyCode.Space},
-            {Controls.FOCUS, KeyCode.V},
+            {Controls.FOCUS, KeyCode.LeftShift},
             {Controls.PAUSE, KeyCode.Escape},
         },
         new Dictionary<Controls, KeyCode>()

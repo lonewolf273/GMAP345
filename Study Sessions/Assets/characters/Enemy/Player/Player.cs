@@ -152,7 +152,8 @@ public class Player : Enemy {
         if (hud == null && create)
         {
             hud = (GameObject)Instantiate(new GameObject("HUD"), Vector3.up, Quaternion.identity);
-
+            hud.tag = "HUD";
+            hud.layer = 5;
 
             hud.AddComponent<RectTransform>();
             Canvas c = hud.AddComponent<Canvas>();
@@ -163,9 +164,9 @@ public class Player : Enemy {
             c.renderMode = RenderMode.ScreenSpaceOverlay;
             c.pixelPerfect = false;
             c.sortingOrder = 0;
-            c.targetDisplay = 1;
+            c.targetDisplay = 0;
 
-            s.referenceResolution = new Vector2(1600, 900);
+            s.referenceResolution = new Vector2(1600f, 900f);
             s.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
             s.matchWidthOrHeight = 0f;
             s.referencePixelsPerUnit = 100;
@@ -186,8 +187,8 @@ public class Player : Enemy {
         bool shootCheck = autoshoot  || keyboard.PlayerCheck(getNumber(), Controls.SHOOT) || Input.GetButton(getModifier() + " Fire");
         if (shootCheck && timer < 0f)
         {
-            
-            getBulletShooterAt(getBulletAt(0)).shoot(bulletSpeed, transform.position, transform.rotation.z);
+            //Debug.Log(getBulletList(0).getShooter());
+            getBulletList(0).shoot(transform.position, transform.rotation.z);
             timer = getMaxTimer();
         }
         timer -= Time.deltaTime;
