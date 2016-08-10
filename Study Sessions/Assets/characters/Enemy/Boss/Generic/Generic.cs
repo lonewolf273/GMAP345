@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-<<<<<<< HEAD
 using System;
 
 public class Generic : Boss {
@@ -70,18 +69,4 @@ public class Generic : Boss {
     }
 
 
-=======
-
-public class Generic : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
->>>>>>> bde8623... Now has controller support. Streamlined players. Working on general boss scripts. Got rid of old player code
 }

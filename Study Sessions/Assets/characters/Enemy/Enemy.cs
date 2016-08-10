@@ -25,11 +25,6 @@ public abstract class Enemy : MonoBehaviour {
     protected State status;
 
     [SerializeField]
-    protected List<GameObject> bulletList;
-
-    protected List<BulletShooter> bulletShooter;
-
-    [SerializeField]
     protected float moveSpeed;
 
 
@@ -56,6 +51,10 @@ public abstract class Enemy : MonoBehaviour {
         return bullets[i];
     }
 
+    protected BulletList getBulletList(GameObject b)
+    {
+        return getBulletList(findBullet(b));
+    }
     public float getHealthPercent()
     {
         return getHp() / getHpMax();
@@ -79,12 +78,12 @@ public abstract class Enemy : MonoBehaviour {
     }
     public GameObject getBulletAt(int i)
     {
-        if (bulletList.Count <= i) return null;
-        return bulletList[i];
+        if (bullets.Count <= i) return null;
+        return bullets[i].getBullet();
     }
     public int findBullet(GameObject b)
     {
-        for (var i = 0; i < bulletList.Count; i++)
+        for (var i = 0; i < bullets.Count; i++)
         {
             if (b == getBulletList(i).getBullet())
                 return i;
@@ -133,9 +132,7 @@ public abstract class Enemy : MonoBehaviour {
     public void addBullet(GameObject b)
     {
         if (findBullet(b) >= 0) return;
-
-        bulletShooter.Add(new BulletShooter(b));
-        bulletList.Add(b);
+        bullets.Add(new BulletList(b, 1, 1));
     }
     protected void resetShooters()
     {
@@ -147,7 +144,21 @@ public abstract class Enemy : MonoBehaviour {
     {
         status = s;
     }
+    protected void resetAllBullets()
+    {
+        foreach (var i in bullets)
+        {
+            i.reset();
+        }
+    }
 
+    protected void updateAll()
+    {
+        foreach (var i in bullets)
+        {
+            i.update(Time.deltaTime);
+        }
+    }
     /*
      * Facilitators
     */

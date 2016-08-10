@@ -28,7 +28,6 @@ public class Song
     int measureNumber;
     int beatNumber;
     int eighthNumber;
-    int[] measureList = new int[3] {0, 0, 0}; // tracker in [measures, beats, eighths]
     const float converter = 30f; //converts BPM to eighth timer;
 
     public Song(AudioClip s, float bpm)
@@ -39,6 +38,7 @@ public class Song
     public AudioClip getSong() { return song; }
     public float getBPM() { return BPM; } 
     public float getEighthTimer() { return eighthTimer; }
+    public float getWholeTimer() { return eighthTimer * 8; }
     public int getMeasureNumber() { return measureNumber; }
     public int getBeatNumber() { return beatNumber; }
     public int getTotalBeats() { return getMeasureNumber() * 4 + getBeatNumber(); }
@@ -121,6 +121,7 @@ public class Song
         if (getBeatNumber() > 3)
         {
             //Debug.Log("what");
+            Debug.Log(getBeatNumber());
             setMeasureNumber(getMeasureNumber() + 1);
             setBeatNumber(getBeatNumber() - 4);
             a = Passed.MEASURE;
@@ -146,14 +147,24 @@ public class Song
         }
         return Passed.NONE;
     }
+
+    public override string ToString()
+    {
+        return "[" + getMeasureNumber().ToString() + ", " + getBeatNumber().ToString() + ", " + getEighthNumber().ToString() + "]";
+    }
 }
 
 public class Instrument : Boss {
     AudioSource source;
 
     [SerializeField] protected Song s;
+    [SerializeField] protected float rotationAngle;
 
     private int counterList;
+
+    private float angle = 0;
+
+    Song.Passed currentBeat = Song.Passed.NONE;
 
     // Use this for initialization
     void Start()
@@ -165,12 +176,21 @@ public class Instrument : Boss {
         source.clip = s.getSong();
         source.Play();
         s.resetSong();
+        s.setBpm(s.getBPM());
+        resetAllBullets();
+        setStatus(State.ALIVE);
+        source.loop = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        attack();
+        if (getStatus() == State.ALIVE)
+        {
+            currentBeat = s.update();
+            updateAll();
+            attack();
+        }
 #if false
         if (s.update() >= Song.Passed.BEAT)
         {
@@ -200,13 +220,32 @@ public class Instrument : Boss {
     public float getAngleBetween(GameObject g)
     {
         if (g == null) return 0;
-        return Vector2.Angle(transform.position, g.transform.position);
+        return Vector2.Angle(Vector2.up, g.transform.position - transform.position);
     }
 
     public override void attack()
     {
         if (counterList == 0)
-            getBulletList(0).shoot(BulletList.ShotType.CIRCLE, transform.position, getAngleBetween(GameObject.FindGameObjectWithTag("Player")), 4);
+        {
+
+            getBulletList(0).shoot(BulletList.ShotType.CIRCLE, transform.position, angle, 3);
+            //getBulletList(0).shoot(BulletList.ShotType.CIRCLE, transform.position, -angle, 8);
+
+            if (s.getMeasureNumber() >= 16 && s.getMeasureNumber() % 4  != 3)
+            {
+                if (currentBeat != Song.Passed.MEASURE)
+                    getBulletList(2).shoot(BulletList.ShotType.CIRCLE, transform.position, angle, 4);
+                if (s.getMeasureNumber() % 2 == 0)
+                    getBulletList(1).shoot(BulletList.ShotType.CIRCLE, transform.position, angle, 15);
+                getBulletList(3).shoot(BulletList.ShotType.CIRCLE, transform.position, angle, 4);
+            }
+
+            angle += rotationAngle;
+            Debug.Log(s);
+            
+        }
+
+            
         //throw new NotImplementedException();
     }
 
@@ -222,8 +261,13 @@ public class Instrument : Boss {
 
     protected override void afterLife()
     {
-        Debug.Log(getHp());
         //Destroy(gameObject);
     }
-
+    protected new void resetAllBullets()
+    {
+        getBulletList(0).setMaxTimer(s.getEighthTimer());
+        getBulletList(1).setMaxTimer(s.getEighthTimer() * 2);
+        getBulletList(2).setMaxTimer(s.getEighthTimer() * 4);
+        getBulletList(3).setMaxTimer(s.getWholeTimer());
+    }
 }

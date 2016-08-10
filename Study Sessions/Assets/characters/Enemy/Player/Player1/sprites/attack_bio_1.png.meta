@@ -1,0 +1,177 @@
+fileFormatVersion: 2
+guid: f3c87e6f82d560a4997a350cc3dd69f5
+timeCreated: 1470813606
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: attack_bio_1_0
+    21300002: attack_bio_1_1
+    21300004: attack_bio_1_2
+    21300006: attack_bio_1_3
+    21300008: attack_bio_1_4
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: attack_bio_1_0
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 11
+        width: 59
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 18.5, y: 50}
+        - {x: -19.5, y: 50}
+        - {x: -29.5, y: 19}
+        - {x: -29.5, y: -37}
+        - {x: -18.5, y: -50}
+        - {x: 10.5, y: -50}
+        - {x: 29.5, y: -36}
+        - {x: 29.5, y: 33}
+        - {x: 27.5, y: 47}
+    - name: attack_bio_1_1
+      rect:
+        serializedVersion: 2
+        x: 79
+        y: 10
+        width: 65
+        height: 101
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 9.5, y: 50.5}
+        - {x: -26.5, y: 50.5}
+        - {x: -31.5, y: 46.5}
+        - {x: -32.5, y: 37.5}
+        - {x: -32.5, y: -41.5}
+        - {x: -25.5, y: -50.5}
+        - {x: 13.5, y: -50.5}
+        - {x: 32.5, y: -16.5}
+        - {x: 32.5, y: 34.5}
+        - {x: 31.5, y: 38.5}
+    - name: attack_bio_1_2
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 11
+        width: 60
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -15, y: 50}
+        - {x: -30, y: 27}
+        - {x: -30, y: -31}
+        - {x: -19, y: -50}
+        - {x: 20, y: -50}
+        - {x: 30, y: -24}
+        - {x: 30, y: 30}
+        - {x: 14, y: 50}
+      - - {x: -26, y: -25}
+        - {x: -23, y: -24}
+        - {x: -23, y: -21}
+        - {x: -26, y: -20}
+        - {x: -28, y: -22}
+      - - {x: 26, y: -24}
+        - {x: 29, y: -23}
+        - {x: 29, y: -20}
+        - {x: 26, y: -19}
+        - {x: 24, y: -21}
+    - name: attack_bio_1_3
+      rect:
+        serializedVersion: 2
+        x: 218
+        y: 10
+        width: 65
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -2.5, y: -50}
+        - {x: 8.5, y: -50}
+        - {x: 31.5, y: -19}
+        - {x: 32.5, y: -14}
+        - {x: 32.5, y: 10}
+        - {x: 22.5, y: 33}
+        - {x: 9.5, y: 50}
+        - {x: -23.5, y: 50}
+        - {x: -32.5, y: 16}
+        - {x: -32.5, y: -33}
+        - {x: -16.5, y: -50}
+        - {x: -3.5, y: -50}
+        - {x: -3.5, y: -49}
+        - {x: -2.5, y: -43}
+        - {x: -2.5, y: -41}
+    - name: attack_bio_1_4
+      rect:
+        serializedVersion: 2
+        x: 290
+        y: 10
+        width: 59
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -22.5, y: 50}
+        - {x: -29.5, y: 34}
+        - {x: -29.5, y: -35}
+        - {x: -21.5, y: -50}
+        - {x: 10.5, y: -50}
+        - {x: 29.5, y: -39}
+        - {x: 29.5, y: 49}
+        - {x: 24.5, y: 50}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

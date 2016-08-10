@@ -3,9 +3,9 @@ using System.Collections;
 
 public class Bullet : MonoBehaviour {
 
-    public float speed;
-    private Rigidbody2D _rb;
-    private bool deathCheck = false;
+    protected float speed;
+    protected Rigidbody2D _rb;
+    protected bool deathCheck = false;
 
     // Use this for initialization
     void Start () {
@@ -16,19 +16,36 @@ public class Bullet : MonoBehaviour {
     void Update()
     {
         //transform.Rotate(0, 0, angle);
+        move(); 
+
+        //transform.Rotate(0, 0, 100 * Time.deltaTime);
+        
+    }
+    public void move()
+    {
         _rb.velocity = (transform.rotation * Vector2.up).normalized * speed;
         if (checkOutside())
         {
             if (deathCheck)
-                Destroy(gameObject);
+                kill();
             else
                 gameObject.SetActive(false);
         }
-        //transform.Rotate(0, 0, 100 * Time.deltaTime);
-        
+    }
+    public void kill()
+    {
+        Destroy(gameObject);
     }
 
-    bool checkOutside()
+    public void reset()
+    {
+        transform.rotation = new Quaternion(0, 0, 0, 0);
+    }
+    public void setScale(float f)
+    {
+        transform.localScale = new Vector3(f, f, 1);
+    }
+    protected bool checkOutside()
     {
         Vector3 topRight = Camera.main.ViewportToWorldPoint(new Vector3(1, 1));
         Vector3 botLeft = Camera.main.ViewportToWorldPoint(new Vector3(0, 0));

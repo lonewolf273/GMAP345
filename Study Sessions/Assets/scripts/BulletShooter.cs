@@ -56,15 +56,17 @@ public class BulletShooter {
         if (i == null)
         {
             GameObject a = (GameObject)MonoBehaviour.Instantiate(bullet, p, Quaternion.identity);
-            a.GetComponent<Bullet>().speed = s;
+            a.GetComponent<Bullet>().reset();
+            a.GetComponent<Bullet>().changeSpeed(s);
             a.GetComponent<Bullet>().setRotation(q);
             bulletList.Add(a);
         }
         else
         {
             i.SetActive(true);
+            i.GetComponent<Bullet>().reset();
             i.transform.position = p;
-            i.GetComponent<Bullet>().speed = s;
+            i.GetComponent<Bullet>().changeSpeed(s);
             i.GetComponent<Bullet>().setRotation(q);
         }
     }

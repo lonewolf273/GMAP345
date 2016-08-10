@@ -19,7 +19,8 @@ public class Player : Enemy {
     //          Unique variables
     //
     ///////////////////////////////////////
-
+    [SerializeField]
+    protected float focusMultiplier;
     [SerializeField]
     protected float[] startX;
 
@@ -29,8 +30,6 @@ public class Player : Enemy {
     [SerializeField]
     protected int playerNumber;
 
-    private float timer = -1f;
-    [SerializeField] protected float bulletTimer = 0.1f;
 
     Rigidbody2D _rb;
 
@@ -47,30 +46,33 @@ public class Player : Enemy {
 
     protected GameObject protected_healthbar = null;
 
+    protected bool shot;
 
     ///////////////////////////////////////
     //
     //       DEFAULT UNITY FUNCTIONS
     //
     ///////////////////////////////////////
-    
+
     void Start()
     {
 
         hp = hpMax;
-        bulletShooter = new List<BulletShooter>();
         _rb = GetComponent<Rigidbody2D>();
         if (_rb == null)
             _rb = gameObject.AddComponent<Rigidbody2D>();
-
+        getBulletList(0).setMaxTimer(0.1f);
         reset();
+        resetAllBullets();
         setStatus(State.ALIVE);
         createHealthbar();
-        
+
     }
 
     void Update()
     {
+        setShot(false);
+        updateAll();
         attack();
         move();
         //Debug.Log(i.ToString());
@@ -82,16 +84,24 @@ public class Player : Enemy {
     //          INSPECTORS
     //
     ///////////////////////////////////////
-
+    public float getFocusNumber()
+    {
+        return focusMultiplier;
+    }
     public bool getFocus()
     {
         return focusCheck;
     }
     public float getMaxTimer()
     {
-        return bulletTimer;
+        return getBulletList(0).getMaxTimer();
     }
-
+    public bool getShot() { return shot; }
+    public Vector2 getVelocity()
+    {
+        if (_rb == null) return new Vector2();
+        return _rb.velocity;
+    }
     public int getNumber()
     {
         if (playerNumber < 0 || playerNumber > 2)
@@ -113,11 +123,23 @@ public class Player : Enemy {
         return "Player " + getPlayerNumber();
     }
 
+    public float getCurrentSpeed()
+    {
+        float x = getVelocity().x;
+        float y = getVelocity().y;
+        return Mathf.Sqrt(x * x + y * y);
+    }
+
     ///////////////////////////////////////
     //
     //          MUTATORS
     //
     ///////////////////////////////////////
+    public void setShot(bool b) { shot = b; }
+    public void setFocusNumber(float f)
+    {
+        focusMultiplier = f;
+    }
     public void setFocus(bool b)
     {
         focusCheck = b;
@@ -132,8 +154,13 @@ public class Player : Enemy {
 
     public void createHealthbar()
     {
+        
         float x = startX[getNumber() - 1];
         float y = startY[getNumber() - 1];
+
+        if (getNumber() == 2)
+            x = Camera.main.ViewportToScreenPoint(new Vector3(1, 1, 1)).x;
+
 
         GameObject hud = findHUD(true);
         if (hud)
@@ -142,6 +169,12 @@ public class Player : Enemy {
             protected_healthbar.GetComponent<BossHealthbar>().boss = this.gameObject;
             protected_healthbar.transform.SetParent(hud.transform);
             protected_healthbar.GetComponent<RectTransform>().position = new Vector3(x, y);
+            if (getNumber() == 2)
+            {
+                RectTransform r = protected_healthbar.GetComponent<RectTransform>();
+                r.pivot = new Vector2(1, 0);
+                //r.transform.localScale = new Vector3(2f, 2f);
+            }
 
         }
     }
@@ -152,12 +185,8 @@ public class Player : Enemy {
         if (hud == null && create)
         {
             hud = (GameObject)Instantiate(new GameObject("HUD"), Vector3.up, Quaternion.identity);
-<<<<<<< HEAD
             hud.tag = "HUD";
             hud.layer = 5;
-=======
-
->>>>>>> bde8623... Now has controller support. Streamlined players. Working on general boss scripts. Got rid of old player code
 
             hud.AddComponent<RectTransform>();
             Canvas c = hud.AddComponent<Canvas>();
@@ -168,15 +197,9 @@ public class Player : Enemy {
             c.renderMode = RenderMode.ScreenSpaceOverlay;
             c.pixelPerfect = false;
             c.sortingOrder = 0;
-<<<<<<< HEAD
             c.targetDisplay = 0;
 
             s.referenceResolution = new Vector2(1600f, 900f);
-=======
-            c.targetDisplay = 1;
-
-            s.referenceResolution = new Vector2(1600, 900);
->>>>>>> bde8623... Now has controller support. Streamlined players. Working on general boss scripts. Got rid of old player code
             s.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
             s.matchWidthOrHeight = 0f;
             s.referencePixelsPerUnit = 100;
@@ -194,14 +217,12 @@ public class Player : Enemy {
 
     public override void attack()
     {
+
         bool shootCheck = autoshoot  || keyboard.PlayerCheck(getNumber(), Controls.SHOOT) || Input.GetButton(getModifier() + " Fire");
-        if (shootCheck && timer < 0f)
+        if (shootCheck)
         {
-            //Debug.Log(getBulletList(0).getShooter());
-            getBulletList(0).shoot(transform.position, transform.rotation.z);
-            timer = getMaxTimer();
+            setShot(getBulletList(0).shoot(transform.position, transform.rotation.z));
         }
-        timer -= Time.deltaTime;
     }
 
     public override void die()
@@ -215,6 +236,8 @@ public class Player : Enemy {
     {
         setStatus(State.ALIVE);
     }
+
+
     public override void move()
     {
         float moverX, moverY;
@@ -246,8 +269,25 @@ public class Player : Enemy {
             setFocus(false);
 
         if (getFocus())
-            mod = 0.4f;
+            mod = getFocusNumber();
 
-        _rb.velocity = new Vector2(moverX * mod, moverY * mod);
+        _rb.velocity = avoidOff(new Vector2(moverX * mod, moverY * mod));
+    }
+
+    Vector2 avoidOff(Vector2 v)
+    {
+        float padding = 0.1f;
+        v = v * Time.deltaTime;
+        //Debug.Log(Camera.main.ViewportToWorldPoint(new Vector3(1, 1, 1)).ToString() + transform.position.ToString() + v.ToString());
+        if (Camera.main.ViewportToWorldPoint(new Vector3(0 + padding / 2, 0, 0)).x >= transform.position.x + v.x)
+            v.x = 0;
+        else if (Camera.main.ViewportToWorldPoint(new Vector3(1 - padding / 2, 1, 1)).x <= transform.position.x + v.x)
+            v.x = 0;
+
+
+        if (Camera.main.ViewportToWorldPoint(new Vector3(0, 0 + padding, 0)).y >= transform.position.y + v.y || Camera.main.ViewportToWorldPoint(new Vector3(1, 1 - padding, 1)).y <= transform.position.y + v.y)
+            v.y = 0;
+
+        return v / Time.deltaTime;
     }
 }

@@ -66,8 +66,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\EighthDisplay.cs" />
+    <Compile Include="Assets\EighthNote.cs" />
+    <Compile Include="Assets\InstrumentAnimator.cs" />
+    <Compile Include="Assets\PlayerAnimator.cs" />
     <Compile Include="Assets\characters\Enemy\Boss\Boss.cs" />
     <Compile Include="Assets\characters\Enemy\Boss\Generic\Generic.cs" />
+    <Compile Include="Assets\characters\Enemy\Boss\Music\Bullets\HalfNote\HalfNote.cs" />
+    <Compile Include="Assets\characters\Enemy\Boss\Music\Bullets\WholeNote\WholeNote.cs" />
+    <Compile Include="Assets\characters\Enemy\Boss\Music\Instrument.cs" />
     <Compile Include="Assets\characters\Enemy\Enemy.cs" />
     <Compile Include="Assets\characters\Enemy\Player\Player.cs" />
     <Compile Include="Assets\scripts\BossAttackGeneric.cs" />
